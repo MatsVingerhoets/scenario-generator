@@ -73,6 +73,15 @@ RUN set -eux; \
     ln -sf /usr/local/${dir}/bin/nvim /usr/local/bin/nvim; \
     rm -f /tmp/${archive}
 
+# Build tree-sitter-cli inside the image so nvim-treesitter uses a glibc-compatible binary
+ARG TREE_SITTER_VERSION=0.22.6
+RUN curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal && \
+    /root/.cargo/bin/cargo install tree-sitter-cli --locked --version ${TREE_SITTER_VERSION} && \
+    echo 'export PATH=/root/.cargo/bin:$PATH' >> /root/.profile
+
+ENV PATH="/root/.cargo/bin:${PATH}"
+ENV TS_INSTALL_BIN="/root/.cargo/bin/tree-sitter"
+
 # Install Node.js 24 via NodeSource
 RUN apt-get update && \
     apt-get install -y curl ca-certificates gnupg && \
