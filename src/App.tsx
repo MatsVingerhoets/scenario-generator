@@ -8,14 +8,10 @@ const scenarioTypes = scenarios.types
 function App() {
   const typeKeys = Object.keys(scenarioTypes) as ScenarioTypeKey[]
   const [selectedType, setSelectedType] = useState<ScenarioTypeKey | ''>('')
-  const [selectedSubType, setSelectedSubType] = useState('')
 
   const handleTypeChange = (event: SelectChangeEvent) => {
     const nextType = event.target.value as ScenarioTypeKey
     setSelectedType(nextType)
-    const nextSubTypes = scenarioTypes[nextType]?.subTypes ?? []
-    const randomIndex = Math.floor(Math.random() * nextSubTypes.length)
-    setSelectedSubType(nextSubTypes[randomIndex])
   };
 
   return (
